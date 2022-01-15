@@ -121,6 +121,11 @@ local highlights = {
   { hg = 'DiagnosticUnderlineInfo', fg = colors.blue, gui = 'underline', cterm = 'underline' },
   { hg = 'DiagnosticUnderlineHint', fg = colors.cyan, gui = 'underline', cterm = 'underline' },
 
+  -- Neovim's built-in language server client
+  { hg = 'LspReferenceWrite', fg = colors.blue, gui='underline' },
+  { hg = 'LspReferenceText', fg = colors.blue, gui='underline' },
+  { hg = 'LspReferenceRead', fg = colors.blue, gui='underline' },
+
   -- ... an exception for my favorite plugin
   { hg = 'GitSignsAdd', fg = colors.green },
   { hg = 'GitSignsChange', fg = colors.yellow },
