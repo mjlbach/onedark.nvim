@@ -1,5 +1,11 @@
-local M = {}
+-- Boiler plate for "proper" colorschemes
+vim.o.background = 'dark'
+vim.cmd 'hi clear'
+if vim.fn.exists 'syntax_on' then
+  vim.cmd 'syntax reset'
+end
 
+-- The basic color palette
 local colors = {
   red = '#E06C75',
   dark_red = '#BE5046',
@@ -22,10 +28,11 @@ local colors = {
   vertsplit = '#3E4452',
 }
 
+-- The highlights
 local highlights = {
 
   -- Syntax Groups (descriptions and ordering from `:h w18`)
-  { hg = 'Comment', fg = colors.comment_grey, gui = 'italic', cterm = 'italic' }, -- any comment
+  { hg = 'Comment', fg = colors.comment_grey, italic = true, cterm_italic=true, gui = 'italic', cterm = 'italic' }, -- any comment
   { hg = 'Constant', fg = colors.cyan }, --any constant
   { hg = 'String', fg = colors.green }, --a string constant: "this is a string"
   { hg = 'Character', fg = colors.green }, --a character constant: 'c', '\n'
@@ -56,7 +63,7 @@ local highlights = {
   { hg = 'Delimiter' }, --character that needs attention
   { hg = 'SpecialComment', fg = colors.comment_grey }, --special things inside a comment
   { hg = 'Debug' }, --debugging statements
-  { hg = 'Underlined', gui = 'underline', cterm = 'underline' }, --text that stands out, HTML links
+  { hg = 'Underlined', underline=true, cterm_underline=true, gui = 'underline', cterm = 'underline' }, --text that stands out, HTML links
   { hg = 'Ignore' }, --left blank, hidden
   { hg = 'Error', fg = colors.red }, --any erroneous construct
   { hg = 'Todo', fg = colors.purple }, --anything that needs extra attention; mostly the keywords TODO FIXME and XXX
@@ -69,7 +76,7 @@ local highlights = {
   { hg = 'CursorLine', bg = colors.cursor_grey }, --the screen line that the cursor is in when 'cursorline' is set
   { hg = 'Directory', fg = colors.blue }, --directory names (and other special names in listings)
   { hg = 'DiffAdd', bg = colors.green, fg = colors.black }, --diff mode: Added line
-  { hg = 'DiffChange', fg = colors.yellow, gui = 'underline', cterm = 'underline' }, --diff mode: Changed line
+  { hg = 'DiffChange', fg = colors.yellow, underline=true, cterm_underline=true, gui = 'underline', cterm = 'underline' }, --diff mode: Changed line
   { hg = 'DiffDelete', bg = colors.red, fg = colors.black }, --diff mode: Deleted line
   { hg = 'DiffText', bg = colors.yellow, fg = colors.black }, --diff mode: Changed text within a changed line
   { hg = 'ErrorMsg', fg = colors.red }, --error messages on the command line
@@ -80,7 +87,7 @@ local highlights = {
   { hg = 'IncSearch', fg = colors.yellow, bg = colors.comment_grey }, --'incsearch' highlighting; also used for the text replaced with ":s///c"
   { hg = 'LineNr', fg = colors.gutter_fg_grey }, --Line number for " =number" and ":#" commands, and when 'number' or 'relativenumber' option is set.
   { hg = 'CursorLineNr' }, --Like LineNr when 'cursorline' or 'relativenumber' is set for the cursor line.
-  { hg = 'MatchParen', fg = colors.blue, gui = 'underline', cterm = 'underline' }, --The character under the cursor or just before it, if it is a paired bracket, and its match.
+  { hg = 'MatchParen', fg = colors.blue, underline=true, cterm_underline=true, gui = 'underline', cterm = 'underline' }, --The character under the cursor or just before it, if it is a paired bracket, and its match.
   { hg = 'ModeMsg' }, --'showmode' message (e.g., "-- INSERT --")
   { hg = 'MoreMsg' }, --more-prompt
   { hg = 'NonText', fg = colors.special_grey }, --'~' and '@' at the end of the window, characters from 'showbreak' and other characters that do not really exist in the text (e.g., ">" displayed when a double-wide character doesn't fit at the end of the line).
@@ -93,7 +100,7 @@ local highlights = {
   { hg = 'QuickFixLine', fg = colors.black, bg = colors.yellow }, --Current quickfix item in the quickfix window.
   { hg = 'Search', fg = colors.black, bg = colors.yellow }, --Last search pattern highlighting (see 'hlsearch'). Also used for similar items that need to stand out.
   { hg = 'SpecialKey', fg = colors.special_grey }, --Meta and special keys listed with " =map", also for text used to show unprintable characters in the text, 'listchars'. Generally: text that is displayed differently from what it really is.
-  { hg = 'SpellBad', fg = colors.red, gui = 'underline', cterm = 'underline' }, --Word that is not recognized by the spellchecker. This will be combined with the highlighting used otherwise.
+  { hg = 'SpellBad', fg = colors.red, underline=true, cterm_underline= true, gui = 'underline', cterm = 'underline' }, --Word that is not recognized by the spellchecker. This will be combined with the highlighting used otherwise.
   { hg = 'SpellCap', fg = colors.dark_yellow }, --Word that should start with a capital. This will be combined with the highlighting used otherwise.
   { hg = 'SpellLocal', fg = colors.dark_yellow }, --Word that is recognized by the spellchecker as one that is used in another region. This will be combined with the highlighting used otherwise.
   { hg = 'SpellRare', fg = colors.dark_yellow }, --Word that is recognized by the spellchecker as one that is hardly ever used. spell This will be combined with the highlighting used otherwise.
@@ -116,15 +123,15 @@ local highlights = {
   { hg = 'DiagnosticWarn', fg = colors.yellow },
   { hg = 'DiagnosticInfo', fg = colors.blue },
   { hg = 'DiagnosticHint', fg = colors.cyan },
-  { hg = 'DiagnosticUnderlineError', fg = colors.red, gui = 'underline', cterm = 'underline' },
-  { hg = 'DiagnosticUnderlineWarn', fg = colors.yellow, gui = 'underline', cterm = 'underline' },
-  { hg = 'DiagnosticUnderlineInfo', fg = colors.blue, gui = 'underline', cterm = 'underline' },
-  { hg = 'DiagnosticUnderlineHint', fg = colors.cyan, gui = 'underline', cterm = 'underline' },
+  { hg = 'DiagnosticUnderlineError', fg = colors.red, underline=true, cterm_underline= true, gui = 'underline', cterm = 'underline' },
+  { hg = 'DiagnosticUnderlineWarn', fg = colors.yellow, underline=true, cterm_underline= true, gui = 'underline', cterm = 'underline' },
+  { hg = 'DiagnosticUnderlineInfo', fg = colors.blue, underline=true, cterm_underline= true, gui = 'underline', cterm = 'underline' },
+  { hg = 'DiagnosticUnderlineHint', fg = colors.cyan, underline=true, cterm_underline= true, gui = 'underline', cterm = 'underline' },
 
   -- Neovim's built-in language server client
-  { hg = 'LspReferenceWrite', fg = colors.blue, gui='underline' },
-  { hg = 'LspReferenceText', fg = colors.blue, gui='underline' },
-  { hg = 'LspReferenceRead', fg = colors.blue, gui='underline' },
+  { hg = 'LspReferenceWrite', fg = colors.blue, underline=true, cterm_underline= true, gui='underline' },
+  { hg = 'LspReferenceText', fg = colors.blue, underline=true, cterm_underline= true, gui='underline' },
+  { hg = 'LspReferenceRead', fg = colors.blue, underline=true, cterm_underline= true, gui='underline' },
 
   -- ... an exception for my favorite plugin
   { hg = 'GitSignsAdd', fg = colors.green },
@@ -132,20 +139,27 @@ local highlights = {
   { hg = 'GitSignsDelete', fg = colors.red },
 }
 
-M.colorscheme = function()
-  local highlight_cmds = {}
-  for idx = 1, #highlights do
-    local highlight = highlights[idx]
-    highlight_cmds[idx] = string.format(
-      'highlight %s guifg=%s guibg=%s gui=%s guisp=%s',
-      highlight.hg,
-      highlight.fg or 'NONE',
-      highlight.bg or 'NONE',
-      highlight.gui or 'NONE',
-      highlight.guisp or 'NONE'
-    )
-  end
-  vim.cmd(table.concat(highlight_cmds, '\n'))
+-- map using ns_0
+for idx = 1, #highlights do
+  local highlight = highlights[idx]
+  vim.api.nvim_set_hl(
+    0,
+    highlight.hg,
+    {
+      background = highlight.bg,
+      foreground = highlight.fg,
+      ctermbg = highlight.ctermbg,
+      ctermfg = highlight.ctermfg,
+      bold = highlight.bold,
+      italic = highlight.italic,
+      reverse = highlight.reverse,
+      undercurl = highlight.undercurl,
+      underline = highlight.underline,
+      cterm = {
+        italic = highlight.cterm_italic,
+        reverse = highlight.cterm_reverse,
+        undercurl = highlight.cterm_undercurl,
+      }
+    }
+  )
 end
-
-return M
