@@ -125,6 +125,7 @@ local highlights = {
   { hg = 'LspReferenceWrite', fg = colors.blue, gui='underline' },
   { hg = 'LspReferenceText', fg = colors.blue, gui='underline' },
   { hg = 'LspReferenceRead', fg = colors.blue, gui='underline' },
+  { hg = 'LspSignatureActiveParameter', fg=colors.yellow, gui='bold' },
 
   -- ... an exception for my favorite plugin
   { hg = 'GitSignsAdd', fg = colors.green },
